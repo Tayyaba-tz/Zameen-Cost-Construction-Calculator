@@ -105,14 +105,14 @@ img {
 }
 
 .mainnav__logo {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--navy);
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
-.mainnav__logo span {
-  color: var(--green);
+.mainnav__logo img {
+  height: 32px;
+  width: auto;
 }
 
 .mainnav__logo--mobile {
@@ -135,26 +135,6 @@ img {
 
 .mainnav__link:hover {
   color: var(--green-dark);
-}
-
-.mainnav__right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: 0.88rem;
-  color: var(--navy);
-  flex-shrink: 0;
-}
-
-.mainnav__unit {
-  white-space: nowrap;
-  opacity: 0.85;
-}
-
-.mainnav__divider {
-  width: 1px;
-  height: 16px;
-  background: var(--border);
 }
 
 /* ===================== DROPDOWNS (Tools / More / Buy / Unit / Currency) ===================== */
@@ -196,11 +176,6 @@ img {
   padding: 8px 0;
   z-index: 60;
   margin-top: 8px;
-}
-
-.dropdown__menu--right {
-  left: auto;
-  right: 0;
 }
 
 .dropdown.is-open .dropdown__menu {
@@ -320,10 +295,6 @@ img {
     font-size: 0.76rem;
   }
 
-  .mainnav__right {
-    gap: 10px;
-    font-size: 0.82rem;
-  }
 }
 
 /* Phones + small tablets: collapse everything into the hamburger */
@@ -338,13 +309,12 @@ img {
   }
 
   .mainnav__logo,
-  .mainnav__links,
-  .mainnav__right {
+  .mainnav__links {
     display: none;
   }
 
   .mainnav__logo--mobile {
-    display: block;
+    display: flex;
   }
 
   .hamburger {
@@ -383,7 +353,7 @@ img {
 
 /* ===================== FOOTER ===================== */
 .site-footer {
-  background: #16233b;
+  background: #212020;
   color: #cfd6e2;
   padding: 48px 24px 24px;
   margin-top: 60px;
@@ -424,11 +394,14 @@ img {
 .footer-col__rda {
   display: inline-block;
   background: #fff;
-  color: #16233b;
-  padding: 8px 14px;
+  padding: 10px 14px;
   border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
+}
+
+.footer-col__rda img {
+  height: 50px;
+  width: auto;
+  display: block;
 }
 
 .site-footer__social {
@@ -445,10 +418,16 @@ img {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #24344f;
+  /*background: #24344f;*/
   color: #fff;
   font-size: 0.7rem;
   font-weight: 700;
+}
+
+.site-footer__social a img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
 }
 
 .site-footer__social a:hover {

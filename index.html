@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction Cost Calculator - Zameen.com</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+
+    <!-- Bar 1: green top bar -->
+    <div class="topbar">
+      <div class="topbar__inner">
+
+        <div class="topbar__left">
+          <a href="https://www.zameen.com/" class="topbar__icon" aria-label="Home">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z"></path>
+            </svg>
+          </a>
+          <a href="https://www.zameen.com/" class="topbar__link">Properties</a>
+          <a href="https://www.myzameen.com/" class="topbar__link">Property Blocks</a>
+          <a href="https://www.zameen.com/area-guides/" class="topbar__link">Area Guides</a>
+          <a href="https://www.zameen.com/blog/" class="topbar__link">Blog</a>
+          <a href="https://www.zameen.com/society_maps/" class="topbar__link">Maps</a>
+
+          <div class="dropdown" data-dropdown>
+            <button class="topbar__link dropdown__toggle" type="button" aria-expanded="false">
+              Tools
+              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+            <div class="dropdown__menu">
+              <a href="https://www.zameen.com/plotfinder/">Plot Finder</a>
+              <a href="https://www.zameen.com/tools/home-loan-calculator/">Home Loan Calculator</a>
+              <a href="https://www.zameen.com/tools/area-unit-converter">Area Unit Converter</a>
+              <a href="https://www.zameen.com/tools/land-records">Land Record Pages</a>
+              <a href="https://www.zameen.com/tools/construction-cost-calculator" class="is-current">Construction Cost Calculator</a>
+            </div>
+          </div>
+
+          <div class="dropdown" data-dropdown>
+            <button class="topbar__link dropdown__toggle" type="button" aria-expanded="false">
+              More
+              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+            <div class="dropdown__menu">
+              <a href="https://www.zameen.com/forum/">Forum</a>
+              <a href="https://www.zameen.com/index/">Index</a>
+              <a href="https://www.zameen.com/trends.html">Trends</a>
+            </div>
+          </div>
+
+          <a href="https://www.zameen.com/add_property_single.html" class="topbar__link topbar__link--cta">Add Property</a>
+        </div>
+
+        <div class="topbar__right">
+          <a href="https://www.zameen.com/ur" class="topbar__link">اردو</a>
+
+          <div class="dropdown" data-dropdown>
+            <button class="topbar__link dropdown__toggle" type="button" aria-expanded="false">
+              Marla
+              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+            <div class="dropdown__menu dropdown__menu--right">
+              <a href="#" data-unit="marla">Marla</a>
+              <a href="#" data-unit="kanal">Kanal</a>
+              <a href="#" data-unit="sqft">Sq. Ft.</a>
+            </div>
+          </div>
+
+          <div class="dropdown" data-dropdown>
+            <button class="topbar__link dropdown__toggle" type="button" aria-expanded="false">
+              PKR
+              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+            <div class="dropdown__menu dropdown__menu--right">
+              <a href="#" data-currency="pkr">PKR</a>
+              <a href="#" data-currency="usd">USD</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bar 2: white main nav bar -->
+    <nav class="mainnav">
+      <div class="mainnav__inner">
+
+        <a href="https://www.zameen.com/" class="mainnav__logo">
+          zameen<span>.com</span>
+        </a>
+
+        <div class="mainnav__links">
+          <div class="dropdown" data-dropdown>
+            <button class="mainnav__link dropdown__toggle" type="button" aria-expanded="false">
+              Buy
+              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+            <div class="dropdown__menu">
+              <a href="https://www.zameen.com/">Homes</a>
+              <a href="https://www.zameen.com/plots.html">Plots</a>
+              <a href="https://www.zameen.com/commercial.html">Commercial</a>
+            </div>
+          </div>
+          <a href="https://www.zameen.com/rentals.html" class="mainnav__link">Rent</a>
+          <a href="https://www.zameen.com/agents.html" class="mainnav__link">Agents</a>
+          <a href="https://www.zameen.com/new-projects/" class="mainnav__link">New Projects</a>
+        </div>
+
+        <div class="mainnav__right">
+          <a href="#" class="mainnav__link">Login</a>
+          <a href="https://www.zameen.com/ur" class="mainnav__link">اردو</a>
+          <span class="mainnav__divider" aria-hidden="true"></span>
+          <span class="mainnav__unit">Marla</span>
+          <span class="mainnav__divider" aria-hidden="true"></span>
+          <span class="mainnav__unit">PKR</span>
+        </div>
+
+        <!-- Mobile-only centered logo -->
+        <a href="https://www.zameen.com/" class="mainnav__logo mainnav__logo--mobile">
+          zameen<span>.com</span>
+        </a>
+
+        <!-- Hamburger, mobile only -->
+        <button class="hamburger" id="hamburgerBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile slide-down menu: every link from both bars, flattened -->
+    <div class="mobile-menu" id="mobileMenu">
+
+      <div class="mobile-menu__group">
+        <a href="https://www.zameen.com/">Properties</a>
+        <a href="https://www.myzameen.com/">Property Blocks</a>
+        <a href="https://www.zameen.com/area-guides/">Area Guides</a>
+        <a href="https://www.zameen.com/blog/">Blog</a>
+        <a href="https://www.zameen.com/society_maps/">Maps</a>
+      </div>
+
+      <div class="mobile-menu__group">
+        <p class="mobile-menu__heading">Tools</p>
+        <a href="https://www.zameen.com/plotfinder/">Plot Finder</a>
+        <a href="https://www.zameen.com/tools/home-loan-calculator/">Home Loan Calculator</a>
+        <a href="https://www.zameen.com/tools/area-unit-converter">Area Unit Converter</a>
+        <a href="https://www.zameen.com/tools/land-records">Land Record Pages</a>
+        <a href="https://www.zameen.com/tools/construction-cost-calculator" class="is-current">Construction Cost Calculator</a>
+      </div>
+
+      <div class="mobile-menu__group">
+        <p class="mobile-menu__heading">Buy</p>
+        <a href="https://www.zameen.com/">Homes</a>
+        <a href="https://www.zameen.com/plots.html">Plots</a>
+        <a href="https://www.zameen.com/commercial.html">Commercial</a>
+        <a href="https://www.zameen.com/rentals.html">Rent</a>
+        <a href="https://www.zameen.com/agents.html">Agents</a>
+        <a href="https://www.zameen.com/new-projects/">New Projects</a>
+      </div>
+
+      <div class="mobile-menu__group">
+        <p class="mobile-menu__heading">More</p>
+        <a href="https://www.zameen.com/forum/">Forum</a>
+        <a href="https://www.zameen.com/index/">Index</a>
+        <a href="https://www.zameen.com/trends.html">Trends</a>
+        <a href="https://www.zameen.com/add_property_single.html">Add Property</a>
+      </div>
+
+      <div class="mobile-menu__group">
+        <p class="mobile-menu__heading">Account &amp; Preferences</p>
+        <a href="#">Login</a>
+        <a href="https://www.zameen.com/ur">اردو</a>
+        <a href="#">Area Unit: Marla</a>
+        <a href="#">Currency: PKR</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ PAGE PLACEHOLDER ============ -->
+  <main class="page-placeholder">
+    <p>Page content (the construction cost calculator form) goes here.</p>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="site-footer__columns">
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="https://www.zameen.com/about/aboutus.html">About Us</a>
+        <a href="https://www.zameen.com/contact-us/">Contact Us</a>
+        <a href="https://jobs.zameen.com">Jobs</a>
+        <a href="https://help.zameen.com/hc/en-us">Help &amp; Support</a>
+        <a href="https://www.zameen.com/advertise/index.html">Advertise On Zameen</a>
+        <a href="https://www.zameen.com/privacy.html">Privacy Policy</a>
+        <a href="https://www.zameen.com/terms.html">Terms Of Use</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="https://www.zameen.com/blog/">Blog</a>
+        <a href="https://www.zameen.com/news">News</a>
+        <a href="https://www.zameen.com/forum/">Forum</a>
+        <a href="https://expo.zameen.com">Expo</a>
+        <a href="https://www.zameen.com/agents.html">Real Estate Agents</a>
+        <a href="https://www.zameen.com/add_property_single.html">Add Property</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Head Office</h4>
+        <p class="footer-col__text">
+          Pearl One, 94-B/I, MM Alam Road,<br />
+          Gulberg III, Lahore, Pakistan.
+        </p>
+        <p class="footer-col__text">
+          0800-ZAMEEN (92633)<br />
+          Monday To Sunday 9AM to 6PM
+        </p>
+        <a href="https://www.zameen.com/contactus.html">Email Us</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Roshan Digital Account</h4>
+        <a href="https://www.zameen.com/partners/roshan-digital-account/" class="footer-col__rda">
+          Roshan Digital Account
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer__social">
+      <a href="https://www.facebook.com/ZameenPK" aria-label="Facebook">FB</a>
+      <a href="https://www.instagram.com/zameenpk" aria-label="Instagram">IG</a>
+      <a href="https://www.youtube.com/channel/UCd5zTrqwM1lSd1KyeEZcswA" aria-label="YouTube">YT</a>
+      <a href="https://twitter.com/ZameenProperty" aria-label="Twitter">TW</a>
+      <a href="https://pk.linkedin.com/company/zameen-com" aria-label="LinkedIn">IN</a>
+    </div>
+
+    <p class="site-footer__copyright">© Copyright 2007 - 2026 Zameen.com. All Rights Reserved</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

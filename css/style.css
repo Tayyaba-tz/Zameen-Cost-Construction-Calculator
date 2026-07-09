@@ -55,7 +55,7 @@ img {
   align-items: center;
   gap: 22px;
   flex-wrap: wrap;
-  margin-left: 50px;
+  margin-left: 30px;
   margin-right: 20px;
 }
 
@@ -91,8 +91,7 @@ img {
 
 .mainnav__inner {
   background-color: #f7f7f7;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 1300px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -102,6 +101,7 @@ img {
   position: relative;
   font-size: .875rem;
   color: #848484;
+  margin-left: 30px;
 }
 
 .mainnav__logo {
@@ -516,7 +516,7 @@ img {
   cursor: pointer;
 }
 
-/* ===================== POPULAR CALCULATIONS ===================== */
+/* ===================== POPULAR CALCULATIONS (horizontal carousel) ===================== */
 .popular {
   margin-bottom: 60px;
 }
@@ -528,27 +528,95 @@ img {
   margin-bottom: 20px;
 }
 
-.popular__grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+.popular__carousel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.popular__track {
+  display: flex;
   gap: 14px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  flex: 1;
+  /* hide scrollbar across browsers, arrows drive the scrolling */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.popular__track::-webkit-scrollbar {
+  display: none;
 }
 
 .popular__card {
-  display: block;
-  padding: 14px 16px;
+  flex: 0 0 190px;
+  height: 190px;
+  scroll-snap-align: start;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--navy);
+  border-radius: 10px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
   background: #fff;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .popular__card:hover {
   border-color: var(--green);
-  box-shadow: 0 2px 10px rgba(0, 168, 89, 0.12);
+  box-shadow: 0 2px 10px rgba(51, 161, 55, 0.14);
+}
+
+.popular__card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.35;
+}
+
+.popular__card-sub {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #767676;
+  line-height: 1.4;
+  margin-top: 14px;
+}
+
+.popular__card-details {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: auto;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1a73e8;
+}
+
+.popular__arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.popular__arrow:hover {
+  background: #f4f7f6;
+  border-color: var(--green);
   color: var(--green-dark);
+}
+
+.popular__arrow.is-hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* ===================== THINGS TO KEEP IN MIND ===================== */
@@ -567,7 +635,7 @@ img {
   font-size: 0.9rem;
   color: var(--grey-text);
   line-height: 1.7;
-  max-width: 900px;
+  max-width: 100%;
   margin-bottom: 28px;
 }
 
@@ -584,9 +652,9 @@ img {
 }
 
 .tip-card__icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 16px;
+  width: 80px;
+  height: 80px;
+  margin: 0 0 16px;
 }
 
 .tip-card h3 {
@@ -608,8 +676,9 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .popular__grid {
-    grid-template-columns: repeat(3, 1fr);
+  .popular__card {
+    flex-basis: 170px;
+    height: 180px;
   }
 
   .tips__grid {
@@ -627,8 +696,15 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .popular__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .popular__arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .popular__card {
+    flex-basis: 160px;
+    height: 170px;
+    padding: 14px;
   }
 
   .tips__grid {
@@ -645,8 +721,8 @@ img {
     padding: 16px 16px 40px;
   }
 
-  .popular__grid {
-    grid-template-columns: 1fr;
+  .popular__arrow {
+    display: none;
   }
 
   .tips__grid {
@@ -685,7 +761,7 @@ img {
 }
 
 .footer-col a:hover {
-  color: #bdbdbd;
+  color: #fff;
   text-decoration: underline;
 }
 
@@ -729,7 +805,9 @@ img {
 }
 
 .footer-col__rda {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .footer-col__rda img {
@@ -751,18 +829,17 @@ img {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  background: #333333;
   overflow: hidden;
   flex-shrink: 0;
 }
 
 .site-footer__social a img {
- /* width: 26px;
-  height: 26px;
-  object-fit: contain;*/
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 100px;
-  margin-top: 1rem;
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
+  display: block;
+  margin: 0;
 }
 
 .site-footer__social a:hover {
@@ -776,7 +853,6 @@ img {
   font-size: 0.875rem;
   color: #707070;
 }
-
 /* Footer responsive: 2 columns on tablets, 1 column on phones */
 @media (max-width: 768px) {
   .site-footer__columns {

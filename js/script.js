@@ -34,6 +34,28 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeAllDropdowns();
 });
 
+// ===================== POPULAR CALCULATIONS CAROUSEL =====================
+const popularTrack = document.getElementById("popularTrack");
+const popularPrev = document.getElementById("popularPrev");
+const popularNext = document.getElementById("popularNext");
+
+if (popularTrack && popularPrev && popularNext) {
+  const scrollByAmount = () => {
+    const firstCard = popularTrack.querySelector(".popular__card");
+    const cardWidth = firstCard ? firstCard.offsetWidth : 200;
+    const gap = 14;
+    return cardWidth + gap;
+  };
+
+  popularPrev.addEventListener("click", () => {
+    popularTrack.scrollBy({ left: -scrollByAmount(), behavior: "smooth" });
+  });
+
+  popularNext.addEventListener("click", () => {
+    popularTrack.scrollBy({ left: scrollByAmount(), behavior: "smooth" });
+  });
+}
+
 // ===================== MOBILE HAMBURGER MENU =====================
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const mobileMenu = document.getElementById("mobileMenu");

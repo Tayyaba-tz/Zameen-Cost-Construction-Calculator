@@ -20,7 +20,7 @@
 
         <div class="topbar__left">
           <a href="https://www.zameen.com/" class="topbar__icon" aria-label="Home">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
               <path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z"></path>
             </svg>
           </a>
@@ -226,19 +226,77 @@
     <section class="popular">
       <h2>Popular Calculations in Lahore</h2>
 
-      <div class="popular__grid">
-        <a href="#" class="popular__card">3 Marla Construction Cost Double Story 1,215 Sq. ft.</a>
-        <a href="#" class="popular__card">4 Marla Construction Cost Double Story 1,620 Sq. ft.</a>
-        <a href="#" class="popular__card">5 Marla Construction Cost Double Story 2,025 Sq. ft.</a>
-        <a href="#" class="popular__card">6 Marla Construction Cost Double Story 2,295 Sq. ft.</a>
-        <a href="#" class="popular__card">7 Marla Construction Cost Double Story 2,678 Sq. ft.</a>
-        <a href="#" class="popular__card">8 Marla Construction Cost Double Story 3,060 Sq. ft.</a>
-        <a href="#" class="popular__card">10 Marla Construction Cost Double Story 3,375 Sq. ft.</a>
-        <a href="#" class="popular__card">1 Kanal Construction Cost Double Story 6,300 Sq. ft.</a>
-        <a href="#" class="popular__card">3 Marla Grey Structure Cost Double Story 1,215 Sq. ft.</a>
-        <a href="#" class="popular__card">5 Marla Grey Structure Cost Double Story 2,025 Sq. ft.</a>
-        <a href="#" class="popular__card">10 Marla Grey Structure Cost Double Story 3,375 Sq. ft.</a>
-        <a href="#" class="popular__card">1 Kanal Grey Structure Cost Double Story 6,300 Sq. ft.</a>
+      <div class="popular__carousel">
+        <button type="button" class="popular__arrow popular__arrow--prev is-hidden" id="popularPrev" aria-label="Scroll left">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+        </button>
+
+        <div class="popular__track" id="popularTrack">
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/3-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">3 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>1,215 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/4-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">4 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>1,620 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/5-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">5 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>2,025 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/6-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">6 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>2,295 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/7-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">7 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>2,678 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/8-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">8 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>3,060 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/10-marla-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">10 Marla<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>3,375 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/1-kanal-house-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">1 Kanal<br>Construction Cost</span>
+            <span class="popular__card-sub">Double Story<br>6,300 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/3-marla-grey-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">3 Marla<br>Grey Structure Cost</span>
+            <span class="popular__card-sub">Double Story<br>1,215 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/5-marla-grey-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">5 Marla<br>Grey Structure Cost</span>
+            <span class="popular__card-sub">Double Story<br>2,025 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/10-marla-grey-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">10 Marla<br>Grey Structure Cost</span>
+            <span class="popular__card-sub">Double Story<br>3,375 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+          <a href="https://www.zameen.com/tools/construction-cost-calculator/1-kanal-grey-construction-cost-lahore-1/" class="popular__card">
+            <span class="popular__card-title">1 Kanal<br>Grey Structure Cost</span>
+            <span class="popular__card-sub">Double Story<br>6,300 Sq. ft.</span>
+            <span class="popular__card-details">Details <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+
+        <button type="button" class="popular__arrow popular__arrow--next" id="popularNext" aria-label="Scroll right">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
       </div>
     </section>
 

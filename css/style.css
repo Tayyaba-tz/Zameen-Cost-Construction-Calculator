@@ -31,7 +31,7 @@ img {
   --green: #33a137;
   --green-dark: #00863f;
   --navy: #1a2b49;
-  --grey-text: #555;
+  --grey-text: #bdbdbd;
   --border: #e4e4e4;
 }
 
@@ -522,8 +522,8 @@ img {
 }
 
 .popular h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: var(--navy);
   margin-bottom: 20px;
 }
@@ -553,7 +553,7 @@ img {
 
 .popular__card {
   flex: 0 0 190px;
-  height: 190px;
+  height: 160px;
   scroll-snap-align: start;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -565,13 +565,14 @@ img {
 }
 
 .popular__card:hover {
-  border-color: var(--green);
-  box-shadow: 0 2px 10px rgba(51, 161, 55, 0.14);
+  border-color: var(--grey-text);
+  box-shadow: 0 2px 15px rgba(51, 161, 55, 0.14);
 }
 
 .popular__card-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #1a1a1a;
   line-height: 1.35;
 }
@@ -590,8 +591,13 @@ img {
   gap: 2px;
   margin-top: auto;
   font-size: 0.9rem;
-  font-weight: 500;
-  color: #1a73e8;
+  font-weight: 400;
+  color: #3fa0f0;
+}
+
+.popular__card-details:hover {
+  text-decoration: underline;
+
 }
 
 .popular__arrow {
@@ -625,15 +631,15 @@ img {
 }
 
 .tips h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: var(--navy);
   margin-bottom: 14px;
 }
 
 .tips__intro {
-  font-size: 0.9rem;
-  color: var(--grey-text);
+  font-size: 1rem;
+  color: #767474;
   line-height: 1.7;
   max-width: 100%;
   margin-bottom: 28px;
@@ -813,7 +819,7 @@ img {
 .footer-col__rda img {
   height: 40px;
   width: auto;
-  display: block;
+  display: inline-flex;
 }
 
 .site-footer__social {

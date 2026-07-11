@@ -66,13 +66,6 @@ img {
 .topbar__left {
   flex: 1 1 auto;
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.topbar__left::-webkit-scrollbar {
-  display: none;
 }
 
 .topbar__right {
@@ -252,7 +245,7 @@ img {
 
 .mainnav__sep {
   color: var(--border);
-  font-size:1rem;
+  font-size: 1rem;
 }
 
 /* Buy menu: "BUY >" always stays visible. Clicking it reveals Homes | Plots | Commercial beside it */
@@ -270,7 +263,7 @@ img {
 }
 
 .buy-expand.is-open .buy-expand__arrow {
-  transform: rotate(90deg);
+  transform: rotate(0deg);
 }
 
 .buy-expand__items {
@@ -804,47 +797,6 @@ img {
   transform: rotate(180deg);
 }
 
-/* Results panel, revealed after Calculate Cost */
-.calc-results {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 10px 34px rgba(20, 30, 50, 0.14);
-  margin-top: 16px;
-  padding: 24px 40px;
-}
-
-.calc-results.is-hidden {
-  display: none;
-}
-
-.calc-results__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem;
-  color: #444;
-}
-
-.calc-results__row:last-child {
-  border-bottom: none;
-}
-
-.calc-results__row span:last-child {
-  font-weight: 600;
-  color: #1a1a1a;
-}
-
-.calc-results__row--total {
-  font-weight: 700;
-}
-
-.calc-results__row--total span {
-  color: var(--green-dark) !important;
-  font-size: 1rem;
-}
-
 /* ===================== POPULAR CALCULATIONS (horizontal carousel) ===================== */
 .popular {
   margin-bottom: 60px;
@@ -1076,10 +1028,6 @@ img {
 
   .calc-box__submit {
     width: 100%;
-  }
-
-  .calc-results {
-    padding: 18px 22px;
   }
 
   .popular__arrow {

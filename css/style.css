@@ -47,11 +47,12 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 100px;
   min-height: 40px;
   max-width: 1300px;
   margin-left: 30px;
   padding-right: 24px;
+  font-size: 0.875rem;
 }
 
 .topbar__left,
@@ -123,7 +124,7 @@ img {
 .topbar__search {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 18px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 4px;

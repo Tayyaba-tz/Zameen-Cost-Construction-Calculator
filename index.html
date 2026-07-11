@@ -25,14 +25,16 @@
             </svg>
           </a>
           <a href="https://www.zameen.com/" class="topbar__link">PROPERTIES</a>
-          <a href="https://www.myzameen.com/" class="topbar__link">PROPERTY BLOCKS</a>
+          <a href="https://www.myzameen.com/" class="topbar__link">
+            PROPERTY BLOCKS <span class="badge-new">NEW</span>
+          </a>
           <a href="https://www.zameen.com/area-guides/" class="topbar__link">AREA GUIDES</a>
           <a href="https://www.zameen.com/blog/" class="topbar__link">BLOG</a>
           <a href="https://www.zameen.com/society_maps/" class="topbar__link">MAPS</a>
 
           <div class="dropdown" data-dropdown>
             <button class="topbar__link dropdown__toggle" type="button" aria-expanded="false">
-              TOOLS
+              TOOLS <span class="badge-new">NEW</span>
               <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
             </button>
             <div class="dropdown__menu">
@@ -56,11 +58,37 @@
             </div>
           </div>
 
-          <a href="https://www.zameen.com/add_property_single.html" class="topbar__link topbar__link--cta">Add Property</a>
+          <div class="topbar__search">
+            <input type="text" class="topbar__search-input" placeholder="Property ID" />
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="M21 21l-4.3-4.3"></path>
+            </svg>
+          </div>
         </div>
 
         <div class="topbar__right">
-          <a href="https://www.zameen.com/ur" class="topbar__link">اردو</a>
+          <a href="https://www.zameen.com/add_property_single.html" class="topbar__add-property">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+            <span>Add Property</span>
+          </a>
+
+          <a href="https://www.zameen.com/ur" class="topbar__icon-btn topbar__icon-btn--urdu" aria-label="Switch to Urdu">اردو</a>
+
+          <button type="button" class="topbar__icon-btn" aria-label="Settings">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path>
+            </svg>
+          </button>
+
+          <button type="button" class="topbar__icon-btn" aria-label="Profile">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4 4-7 8-7s8 3 8 7"></path>
+            </svg>
+          </button>
         </div>
 
       </div>
@@ -75,25 +103,28 @@
         </a>
 
         <div class="mainnav__links">
-          <div class="dropdown" data-dropdown>
-            <button class="mainnav__link dropdown__toggle" type="button" aria-expanded="false">
+          <div class="buy-expand" data-buy-expand>
+            <button type="button" class="mainnav__link dropdown__toggle buy-expand__toggle" aria-expanded="false">
               BUY
-              <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+              <span class="buy-expand__arrow">&gt;</span>
             </button>
-            <div class="dropdown__menu">
-              <a href="https://www.zameen.com/">HOMES</a>
-              <a href="https://www.zameen.com/plots.html">PLOTS</a>
-              <a href="https://www.zameen.com/commercial.html">COMMERCIAL</a>
+            <div class="buy-expand__items">
+              <a href="https://www.zameen.com/" class="mainnav__link">HOMES</a>
+              <a href="https://www.zameen.com/plots.html" class="mainnav__link">PLOTS</a>
+              <a href="https://www.zameen.com/commercial.html" class="mainnav__link">COMMERCIAL</a>
             </div>
+            <span class="mainnav__sep">|</span>
           </div>
           <a href="https://www.zameen.com/rentals.html" class="mainnav__link">RENT</a>
+          <span class="mainnav__sep">|</span>
           <a href="https://www.zameen.com/agents.html" class="mainnav__link">AGENTS</a>
+          <span class="mainnav__sep">|</span>
           <a href="https://www.zameen.com/new-projects/" class="mainnav__link">NEW PROJECTS</a>
         </div>
 
         <!-- Mobile-only centered logo -->
         <a href="https://www.zameen.com/" class="mainnav__logo mainnav__logo--mobile">
-          <img src="images/zameen-logo.jpg" alt="Zameen.com" />
+          <img src="images/zameen-logo.png" alt="Zameen.com" />
         </a>
 
         <!-- Hamburger, mobile only -->
@@ -151,76 +182,131 @@
   <!-- ============ MAIN ============ -->
   <main class="main-content">
 
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="https://www.zameen.com/">Zameen</a>
-      <span class="breadcrumb__sep">&gt;</span>
-      <span class="breadcrumb__current">Construction Cost Calculator</span>
-    </nav>
+    <!-- Banner with background image -->
+    <section class="banner">
+      <div class="banner__inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="https://www.zameen.com/">Zameen</a>
+          <span class="breadcrumb__sep">&gt;</span>
+          <span class="breadcrumb__current">Construction Cost Calculator</span>
+        </nav>
 
-    <!-- Page heading -->
-    <div class="page-heading">
-      <h1>Construction Cost Calculator</h1>
-      <p>Use our Construction Cost Calculator to get a quick estimate of required building materials along with their costs.</p>
-    </div>
-
-    <!-- White calculator box -->
-    <section class="calc-box">
-      <div class="calc-box__row">
-        <div class="calc-field">
-          <label for="city">City</label>
-          <select id="city" class="calc-select">
-            <option value="lahore">Lahore</option>
-            <option value="karachi">Karachi</option>
-            <option value="islamabad">Islamabad</option>
-          </select>
-        </div>
-
-        <div class="calc-field">
-          <label for="areaSize">Area Size</label>
-          <div class="calc-field__inline">
-            <input type="number" id="areaSize" class="calc-input" value="5" min="1" />
-            <select id="areaUnit" class="calc-select calc-select--unit">
-              <option value="marla">Marla</option>
-              <option value="kanal">Kanal</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="calc-field">
-          <label for="coveredArea">Covered Area</label>
-          <div class="calc-field__inline">
-            <input type="number" id="coveredArea" class="calc-input" value="1125" min="1" />
-            <span class="calc-field__unit">Sq. ft.</span>
-          </div>
+        <div class="page-heading">
+          <h1>Construction Cost Calculator</h1>
+          <p>Use our Construction Cost Calculator to get a quick estimate of required building materials along with their costs.</p>
         </div>
       </div>
 
-      <div class="calc-box__row">
-        <div class="calc-field">
-          <label>Construction Type</label>
-          <div class="toggle-group">
-            <button type="button" class="toggle-btn is-active">Grey Structure</button>
-            <button type="button" class="toggle-btn">Complete</button>
-          </div>
-        </div>
+      <!-- White calculator box, overlaps the bottom edge of the banner -->
+      <div class="calc-box-wrap">
+        <section class="calc-box" id="calcBox">
 
-        <div class="calc-field">
-          <label>Construction Mode</label>
-          <div class="toggle-group">
-            <button type="button" class="toggle-btn is-active">With Material</button>
-            <button type="button" class="toggle-btn">Without Material</button>
+          <div class="calc-col calc-col--1">
+            <div class="calc-field calc-field--bordered dropdown" data-dropdown>
+              <label>City</label>
+              <button type="button" class="calc-field__value dropdown__toggle" id="cityToggle" data-value="Lahore" aria-expanded="false">
+                Lahore
+              </button>
+              <div class="dropdown__menu calc-dropdown-menu">
+                <a href="#" data-city="Lahore" class="is-current">Lahore</a>
+                <a href="#" data-city="Karachi">Karachi</a>
+                <a href="#" data-city="Islamabad">Islamabad</a>
+              </div>
+            </div>
+
+            <div class="calc-field calc-field--more" id="coveredAreaField">
+              <label>Covered Area <span class="info-dot" aria-hidden="true">i</span></label>
+              <div class="calc-field__inline calc-field__inline--bordered">
+                <input type="number" id="coveredArea" class="calc-input calc-input--plain" placeholder="Enter Covered Area" min="1" />
+                <span class="calc-field__suffix">Sq. ft.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-col calc-col--2">
+            <div class="calc-field calc-field--bordered">
+              <label>Area Size</label>
+              <div class="calc-field__inline">
+                <input type="number" id="areaSize" class="calc-input calc-input--plain" placeholder="Enter Area Size" min="1" />
+                <div class="dropdown calc-unit-dropdown" data-dropdown>
+                  <button type="button" class="calc-field__unit-toggle dropdown__toggle" id="unitToggle" data-value="Marla" aria-expanded="false">
+                    <span class="calc-field__unit-label">Marla</span>
+                    <svg class="dropdown__arrow" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+                  </button>
+                  <div class="dropdown__menu calc-dropdown-menu calc-dropdown-menu--right">
+                    <a href="#" data-unit="Marla" class="is-current">Marla</a>
+                    <a href="#" data-unit="Kanal">Kanal</a>
+                    <a href="#" data-unit="Square Feet">Square Feet</a>
+                    <a href="#" data-unit="Square Yards">Square Yards</a>
+                    <a href="#" data-unit="Square Meters">Square Meters</a>
+                    <a href="#" data-unit="Acre">Acre</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="calc-field calc-field--more" id="constructionTypeField">
+              <label>Construction Type <span class="info-dot" aria-hidden="true">i</span></label>
+              <div class="pill-group">
+                <button type="button" class="pill-btn" data-value="grey">
+                  <span class="pill-check">&#10003;</span> Grey Structure
+                </button>
+                <button type="button" class="pill-btn is-active" data-value="complete">
+                  <span class="pill-check">&#10003;</span> Complete
+                </button>
+              </div>
+            </div>
+
+            <div class="calc-field calc-field--more" id="constructionModeField">
+              <label>Construction Mode <span class="info-dot" aria-hidden="true">i</span></label>
+              <div class="pill-group">
+                <button type="button" class="pill-btn" data-value="with">
+                  <span class="pill-check">&#10003;</span> With Material
+                </button>
+                <button type="button" class="pill-btn is-active" data-value="without">
+                  <span class="pill-check">&#10003;</span> Without Material
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-col calc-col--3">
+            <button type="button" class="calc-box__submit" id="calculateBtn">Calculate Cost</button>
+            <button type="button" class="calc-box__more" id="moreOptionsBtn" aria-expanded="false">
+              <span class="calc-box__more-label">More Options</span>
+              <svg class="calc-box__more-arrow" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- Results panel, filled in and revealed by Calculate Cost -->
+        <div class="calc-results is-hidden" id="calcResults">
+          <div class="calc-results__row">
+            <span>Grey Structure Cost</span>
+            <span id="resGrey">Rs 0</span>
+          </div>
+          <div class="calc-results__row">
+            <span>Finishing Cost</span>
+            <span id="resFinish">Rs 0</span>
+          </div>
+          <div class="calc-results__row">
+            <span>Contractor Cost</span>
+            <span id="resContractor">Rs 0</span>
+          </div>
+          <div class="calc-results__row calc-results__row--total">
+            <span>Total Estimated Cost</span>
+            <span id="resTotal">Rs 0</span>
+          </div>
+          <div class="calc-results__row">
+            <span>Price per Sq. ft.</span>
+            <span id="resPerSqft">Rs 0</span>
           </div>
         </div>
       </div>
-
-      <button type="button" class="calc-box__submit">Calculate Cost</button>
-
-      <button type="button" class="calc-box__more">
-        More Options
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"></path></svg>
-      </button>
     </section>
+
+    <!-- Reserves space below the banner for the overlapping calc-box-wrap; height is set by JS -->
+    <div class="calc-box-spacer" id="calcBoxSpacer" aria-hidden="true"></div>
 
     <!-- Popular Calculations -->
     <section class="popular">
@@ -235,62 +321,62 @@
           <a href="https://www.zameen.com/tools/construction-cost-calculator/3-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">3 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>1,215 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/4-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">4 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>1,620 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/5-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">5 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>2,025 Sq. ft.</span>
-            <span class="popular__card-details">Details ></svg></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/6-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">6 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>2,295 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/7-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">7 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>2,678 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/8-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">8 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>3,060 Sq. ft.</span>
-            <span class="popular__card-details">Details ></svg></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/10-marla-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">10 Marla<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>3,375 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/1-kanal-house-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">1 Kanal<br>Construction Cost</span>
             <span class="popular__card-sub">Double Story<br>6,300 Sq. ft.</span>
-            <span class="popular__card-details">Details ></svg></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/3-marla-grey-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">3 Marla<br>Grey Structure Cost</span>
             <span class="popular__card-sub">Double Story<br>1,215 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/5-marla-grey-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">5 Marla<br>Grey Structure Cost</span>
             <span class="popular__card-sub">Double Story<br>2,025 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/10-marla-grey-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">10 Marla<br>Grey Structure Cost</span>
             <span class="popular__card-sub">Double Story<br>3,375 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
           <a href="https://www.zameen.com/tools/construction-cost-calculator/1-kanal-grey-construction-cost-lahore-1/" class="popular__card">
             <span class="popular__card-title">1 Kanal<br>Grey Structure Cost</span>
             <span class="popular__card-sub">Double Story<br>6,300 Sq. ft.</span>
-            <span class="popular__card-details">Details ></span>
+            <span class="popular__card-details">Details &gt;</span>
           </a>
         </div>
 

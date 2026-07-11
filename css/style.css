@@ -45,18 +45,57 @@ img {
   font-weight: 500;
   background-color: #33a137;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 16px;
   min-height: 40px;
+  max-width: 1300px;
+  margin-left: 30px;
+  padding-right: 24px;
 }
 
 .topbar__left,
 .topbar__right {
   display: flex;
   align-items: center;
-  gap: 22px;
-  flex-wrap: wrap;
-  margin-left: 30px;
-  margin-right: 20px;
+  gap: 14px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.topbar__left {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.topbar__left::-webkit-scrollbar {
+  display: none;
+}
+
+.topbar__right {
+  flex-shrink: 0;
+}
+
+.topbar__left > * {
+  flex-shrink: 0;
+}
+
+.badge-new {
+  display: inline-flex;
+  align-items: center;
+  background: #ff5a3c;
+  color: #fff;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  vertical-align: 2px;
+  margin-left: 4px;
+  line-height: 1.4;
 }
 
 .topbar__icon {
@@ -87,6 +126,79 @@ img {
   text-decoration: none;
 }
 
+/* Search bar (visual only, not wired to any real search) */
+.topbar__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: #fff;
+}
+
+.topbar__search-input {
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 0.82rem;
+  color: #fff;
+  width: 110px;
+  background: transparent;
+}
+
+.topbar__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Add Property button */
+.topbar__add-property {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: var(--navy);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.topbar__add-property svg {
+  width: 11px;
+  height: 11px;
+}
+
+.topbar__add-property:hover {
+  background: #f0f0f0;
+}
+
+/* Urdu / settings / profile icon buttons */
+.topbar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.topbar__icon-btn--urdu {
+  width: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.topbar__icon-btn:hover {
+  opacity: 0.8;
+}
+
 /* ===================== BAR 2: WHITE MAIN NAV ===================== */
 
 .mainnav__inner {
@@ -107,7 +219,9 @@ img {
 .mainnav__logo {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
 }
 
 .mainnav__logo img {
@@ -122,18 +236,51 @@ img {
 .mainnav__links {
   display: flex;
   align-items: center;
-  gap: 42px;
+  gap: 30px;
   flex: 1;
 }
 
 .mainnav__link {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   color: #848484;
   white-space: nowrap;
 }
 
 .mainnav__link:hover {
   color: var(--green-dark);
+}
+
+.mainnav__sep {
+  color: var(--border);
+  font-size:1rem;
+}
+
+/* Buy menu: "BUY >" always stays visible. Clicking it reveals Homes | Plots | Commercial beside it */
+.buy-expand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.buy-expand__arrow {
+  display: inline-block;
+  font-size: 0.95rem;
+  transition: transform 0.15s ease;
+}
+
+.buy-expand.is-open .buy-expand__arrow {
+  transform: rotate(90deg);
+}
+
+.buy-expand__items {
+  display: none;
+  align-items: center;
+  gap: 40px;
+}
+
+.buy-expand.is-open .buy-expand__items {
+  display: flex;
 }
 
 /* ===================== DROPDOWNS (Tools / More / Buy / Unit / Currency) ===================== */
@@ -344,7 +491,26 @@ img {
 .main-content {
   max-width: 1300px;
   margin: 0 auto;
-  padding: 20px 24px 60px;
+  padding: 0 24px 60px;
+}
+
+/* ===================== BANNER (background image + heading + calc box) ===================== */
+.banner {
+  position: relative;
+  background-image: url("../images/banner-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 40px;
+  padding-bottom: 210px; /* fixed height reserved for the illustration; never changes size */
+}
+
+.banner__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 /* ===================== BREADCRUMB ===================== */
@@ -354,7 +520,7 @@ img {
   gap: 8px;
   font-size: 0.82rem;
   color: var(--grey-text);
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .breadcrumb a {
@@ -370,122 +536,236 @@ img {
 }
 
 .breadcrumb__current {
-  color: var(--grey-text);
+  color: #333;
 }
 
 /* ===================== PAGE HEADING ===================== */
 .page-heading {
   text-align: center;
   max-width: 720px;
-  margin: 0 auto 32px;
+  margin: 0 auto;
 }
 
 .page-heading h1 {
-  font-size: 2rem;
+  font-size: 2.4rem;
   font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 12px;
+  color: #1a1a1a;
+  margin-bottom: 14px;
 }
 
 .page-heading p {
-  font-size: 0.95rem;
-  color: var(--grey-text);
+  font-size: 1rem;
+  color: #5a5a5a;
   line-height: 1.6;
 }
 
 /* ===================== CALCULATOR BOX ===================== */
+.calc-box-wrap {
+  position: absolute;
+  top: calc(100% - 90px); /* fixed 90px overlap into the banner's bottom edge, regardless of the box's own height */
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1150px, calc(100% - 48px));
+  z-index: 3;
+}
+
+.calc-box-spacer {
+  width: 100%;
+  height: 40px;
+}
+
 .calc-box {
   background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(20, 30, 50, 0.06);
-  padding: 32px;
-  max-width: 900px;
-  margin: 0 auto 60px;
-}
-
-.calc-box__row {
+  border-radius: 10px;
+  box-shadow: 0 10px 34px rgba(20, 30, 50, 0.14);
+  padding: 32px 40px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 22px;
+  grid-template-columns: 1fr 1.2fr auto;
+  gap: 48px;
+  align-items: start;
 }
 
-.calc-box__row:nth-child(2) {
-  grid-template-columns: repeat(2, 1fr);
+.calc-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-col--3 {
+  justify-content: flex-start;
+  min-width: 200px;
+}
+
+.calc-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-field + .calc-field {
+  margin-top: 22px;
 }
 
 .calc-field label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 8px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.info-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  color: #fff;
+  font-size: 0.62rem;
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* Fields with an underline (City, Area Size, Covered Area) */
+.calc-field--bordered {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.calc-field__value {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--green);
+  cursor: pointer;
+  padding: 0;
 }
 
 .calc-field__inline {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.calc-select,
-.calc-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+.calc-field__inline--bordered {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.calc-input--plain {
+  border: none;
+  outline: none;
   font: inherit;
-  font-size: 0.9rem;
-  color: var(--navy);
-  background: #fff;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+  background: transparent;
+  width: 100%;
+  padding: 0;
 }
 
-.calc-select--unit {
-  max-width: 110px;
+.calc-input--plain::placeholder {
+  color: #b3b3b3;
+}
+
+.calc-field__suffix {
+  font-size: 0.85rem;
+  color: #767676;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
-.calc-field__unit {
+.calc-field__unit-toggle {
   display: flex;
   align-items: center;
-  padding: 0 12px;
-  font-size: 0.85rem;
-  color: var(--grey-text);
-  white-space: nowrap;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #f7f9fc;
-}
-
-.toggle-group {
-  display: flex;
-  gap: 8px;
-}
-
-.toggle-btn {
-  flex: 1;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #fff;
+  gap: 4px;
+  background: none;
+  border: none;
   font: inherit;
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--navy);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.toggle-btn.is-active {
+/* City / Area-unit dropdown menus (reuse the generic .dropdown mechanism) */
+.calc-dropdown-menu {
+  min-width: 160px;
+}
+
+.calc-dropdown-menu a.is-current {
   background: var(--green);
-  border-color: var(--green);
   color: #fff;
   font-weight: 600;
 }
 
+.calc-dropdown-menu a.is-current:hover {
+  background: var(--green-dark);
+}
+
+.calc-dropdown-menu--right {
+  left: auto;
+  right: 0;
+}
+
+/* Fields only shown once "More Options" is expanded */
+.calc-field--more {
+  display: none;
+}
+
+.calc-box.is-expanded .calc-field--more {
+  display: flex;
+}
+
+/* Construction Type / Construction Mode pill toggles */
+.pill-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 20px;
+  background: #f0f0f0;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill-btn .pill-check {
+  display: none;
+  font-size: 0.75rem;
+}
+
+.pill-btn.is-active {
+  background: #e3f6e6;
+  color: var(--green-dark);
+  font-weight: 600;
+}
+
+.pill-btn.is-active .pill-check {
+  display: inline;
+}
+
+/* Calculate Cost button + More/Less Options link */
 .calc-box__submit {
   width: 100%;
   padding: 14px;
-  margin-top: 6px;
   background: var(--green);
   color: #fff;
   font-size: 1rem;
@@ -505,7 +785,7 @@ img {
   justify-content: center;
   gap: 4px;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 14px;
   padding: 6px;
   background: none;
   border: none;
@@ -514,6 +794,55 @@ img {
   font-weight: 600;
   color: var(--green-dark);
   cursor: pointer;
+}
+
+.calc-box__more-arrow {
+  transition: transform 0.15s ease;
+}
+
+.calc-box__more.is-expanded .calc-box__more-arrow {
+  transform: rotate(180deg);
+}
+
+/* Results panel, revealed after Calculate Cost */
+.calc-results {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 34px rgba(20, 30, 50, 0.14);
+  margin-top: 16px;
+  padding: 24px 40px;
+}
+
+.calc-results.is-hidden {
+  display: none;
+}
+
+.calc-results__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  color: #444;
+}
+
+.calc-results__row:last-child {
+  border-bottom: none;
+}
+
+.calc-results__row span:last-child {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.calc-results__row--total {
+  font-weight: 700;
+}
+
+.calc-results__row--total span {
+  color: var(--green-dark) !important;
+  font-size: 1rem;
 }
 
 /* ===================== POPULAR CALCULATIONS (horizontal carousel) ===================== */
@@ -678,8 +1007,40 @@ img {
 
 /* Main-content responsive */
 @media (max-width: 1024px) {
-  .calc-box__row {
-    grid-template-columns: repeat(2, 1fr);
+  .topbar__search {
+    display: none;
+  }
+
+  .topbar__add-property span {
+    display: none;
+  }
+
+  .topbar__add-property {
+    padding: 8px;
+    border-radius: 50%;
+  }
+
+  .calc-box {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .calc-col--3 {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    margin-top: 12px;
+  }
+
+  .calc-box__submit {
+    width: auto;
+    flex: 1;
+  }
+
+  .calc-box__more {
+    width: auto;
+    margin-top: 0;
   }
 
   .popular__card {
@@ -693,13 +1054,32 @@ img {
 }
 
 @media (max-width: 768px) {
-  .calc-box {
-    padding: 22px;
+  .banner {
+    padding-bottom: 60px;
   }
 
-  .calc-box__row,
-  .calc-box__row:nth-child(2) {
+  .calc-box-wrap {
+    top: calc(100% - 40px);
+  }
+
+  .calc-box {
     grid-template-columns: 1fr;
+    padding: 22px;
+    gap: 0;
+  }
+
+  .calc-col--3 {
+    grid-column: auto;
+    flex-direction: column;
+    margin-top: 22px;
+  }
+
+  .calc-box__submit {
+    width: 100%;
+  }
+
+  .calc-results {
+    padding: 18px 22px;
   }
 
   .popular__arrow {
@@ -718,13 +1098,39 @@ img {
   }
 
   .page-heading h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 }
 
 @media (max-width: 480px) {
   .main-content {
-    padding: 16px 16px 40px;
+    padding: 0 16px 40px;
+  }
+
+  .banner {
+    padding-top: 24px;
+    padding-bottom: 50px;
+  }
+
+  .banner__inner {
+    padding: 0 16px;
+  }
+
+  .page-heading h1 {
+    font-size: 1.35rem;
+  }
+
+  .calc-box {
+    padding: 18px;
+  }
+
+  .pill-group {
+    gap: 8px;
+  }
+
+  .pill-btn {
+    padding: 8px 12px;
+    font-size: 0.82rem;
   }
 
   .popular__arrow {

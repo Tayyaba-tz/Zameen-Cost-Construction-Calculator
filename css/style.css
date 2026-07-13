@@ -47,12 +47,11 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 100px;
+  gap: 16px;
   min-height: 40px;
   max-width: 1300px;
   margin-left: 30px;
   padding-right: 24px;
-  font-size: 0.875rem;
 }
 
 .topbar__left,
@@ -124,7 +123,7 @@ img {
 .topbar__search {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 8px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 4px;
@@ -958,6 +957,102 @@ img {
   line-height: 1.5;
 }
 
+/* ===================== CONSTRUCTION COST CALCULATOR PROMO ===================== */
+.cta-promo {
+  margin: 40px 0 60px;
+}
+
+.cta-promo__card {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.cta-promo__text {
+  flex: 1 1 55%;
+  padding: 48px;
+}
+
+.cta-promo__text h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.cta-promo__text > p {
+  font-size: 0.95rem;
+  color: #555555;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.cta-promo__list {
+  list-style: none;
+  margin-bottom: 28px;
+}
+
+.cta-promo__list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #444444;
+  margin-bottom: 16px;
+}
+
+.cta-promo__list li:last-child {
+  margin-bottom: 0;
+}
+
+.cta-promo__check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 0.62rem;
+  flex-shrink: 0;
+}
+
+.cta-promo__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 13px 24px;
+  border-radius: 6px;
+  margin-top: 28px;
+}
+
+.cta-promo__btn:hover {
+  background: var(--green-dark);
+}
+
+.cta-promo__image {
+  flex: 1 1 45%;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-promo__image img {
+  max-width: 65%;
+  height: auto;
+}
+
 /* Main-content responsive */
 @media (max-width: 1024px) {
   .topbar__search {
@@ -1048,6 +1143,22 @@ img {
 
   .page-heading h1 {
     font-size: 1.6rem;
+  }
+
+  .cta-promo__card {
+    flex-direction: column;
+  }
+
+  .cta-promo__text {
+    padding: 32px;
+  }
+
+  .cta-promo__image {
+    padding: 24px;
+  }
+
+  .cta-promo__image img {
+    max-width: 45%;
   }
 }
 

@@ -963,23 +963,27 @@ img {
 }
 
 .cta-promo__card {
-  display: flex;
-  align-items: stretch;
+  position: relative;
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  background-color: #fff;
+  background-image: url("../images/house-image.png");
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: auto 100%;
+  min-height: 480px;
 }
 
 .cta-promo__text {
-  flex: 1 1 55%;
+  max-width: 560px;
   padding: 48px;
 }
 
 .cta-promo__text h2 {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-weight: 500;
+  color: var(--navy);
   margin-bottom: 16px;
 }
 
@@ -1025,32 +1029,46 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--green);
-  color: #fff;
+  background: #fff;
+  color: var(--green);
   font-weight: 600;
   font-size: 0.9rem;
   padding: 13px 24px;
   border-radius: 6px;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: var(--green);
   margin-top: 28px;
 }
 
 .cta-promo__btn:hover {
   background: var(--green-dark);
+  color: #fff;
+  transition: border-color 0.15s ease;
 }
 
-.cta-promo__image {
-  flex: 1 1 45%;
-  background: #f4f4f4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
+/* ===================== ABOUT CONSTRUCTION COST CALCULATOR ===================== */
+.about-calc {
+  max-width: 100%;;
+  margin: 0 0 60px;
 }
 
-.cta-promo__image img {
-  max-width: 65%;
-  height: auto;
+.about-calc h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+
+.about-calc p {
+  font-size: 1rem;
+  color: #555555;
+  line-height: 1.75;
+  margin-bottom: 18px;
+}
+
+.about-calc p:last-child {
+  margin-bottom: 0;
 }
 
 /* Main-content responsive */
@@ -1146,19 +1164,19 @@ img {
   }
 
   .cta-promo__card {
-    flex-direction: column;
+    background-image: url("../images/house-image-mob.png");
+    background-position: bottom right;
+    background-size: 190px auto;
+    min-height: 360px;
   }
 
   .cta-promo__text {
+    max-width: 100%;
     padding: 32px;
   }
 
-  .cta-promo__image {
-    padding: 24px;
-  }
-
-  .cta-promo__image img {
-    max-width: 45%;
+  .about-calc h2 {
+    font-size: 1.15rem;
   }
 }
 

@@ -1071,6 +1071,67 @@ img {
   margin-bottom: 0;
 }
 
+/* ===================== GET THE ZAMEEN APP ===================== */
+.app-promo {
+  background: #ffffff;
+  text-align: left;
+  margin-top: 50px;
+  margin-bottom: 26px;
+}
+
+.app-promo h2 {
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 10px;
+}
+
+.app-promo p {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 28px;
+}
+
+.app-promo__badges {
+  display: flex;
+  align-items: right;
+  justify-content: right;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.app-promo__badges img {
+  height: 38px;
+  width: auto;
+}
+
+/* ===================== OUR HOME PARTNERS ===================== */
+.home-partners {
+  text-align: left;
+  margin-bottom: 1px;
+}
+
+.home-partners h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+.home-partners__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f2f2;
+  border-radius: 1px;
+  padding: 24px 48px;
+}
+
+.home-partners__logo img {
+  max-height: 50px;
+  width: auto;
+}
+
 /* Main-content responsive */
 @media (max-width: 1024px) {
   .topbar__search {
@@ -1178,6 +1239,19 @@ img {
   .about-calc h2 {
     font-size: 1.15rem;
   }
+
+  .app-promo {
+    padding: 36px 20px;
+  }
+
+  .app-promo h2,
+  .home-partners h2 {
+    font-size: 1.2rem;
+  }
+
+  .home-partners__logo {
+    padding: 20px 32px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1196,6 +1270,22 @@ img {
 
   .page-heading h1 {
     font-size: 1.35rem;
+  }
+
+  .app-promo__badges {
+    gap: 12px;
+  }
+
+  .app-promo__badges img {
+    height: 42px;
+  }
+
+  .home-partners__logo {
+    padding: 18px 24px;
+  }
+
+  .home-partners__logo img {
+    max-height: 48px;
   }
 
   .calc-box {

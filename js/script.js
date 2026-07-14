@@ -155,6 +155,116 @@ if (calcBox && moreOptionsBtn) {
   });
 }
 
+// ===================== CALCULATOR: Calculate Cost =====================
+// Formulas below are reverse-engineered from real Zameen result pages (see project
+// notes / uploaded formula analysis). Verified baseline is Lahore, Standard grade,
+// 5 Marla / 2,025 sq ft, "With Material":
+//   Complete:       Total = Rs 4,640 / sq ft  (Grey Material 50.09% / Finishing 39.27% / Labour 10.66%)
+//   Grey Structure: Total = Rs 2,553 / sq ft  (Grey Material 81.16% / Labour 18.84%)
+// City and Construction Mode multipliers below are estimated, Zameen does not
+// publish city-specific or mode-specific rate tables, so only the Lahore /
+// With-Material baseline above is directly checked against real output.
+
+const SQFT_PER_MARLA = 225;
+const MARLA_PER_KANAL = 20;
+
+const CITY_MULTIPLIER = {
+  Lahore: 1.0,
+  Karachi: 1.08,
+  Islamabad: 1.12,
+};
+
+const MODE_MULTIPLIER = {
+  with: 1.0, // verified baseline assumes the contractor supplies material
+  without: 0.55, // inference only: material cost mostly stripped out, labour-heavy rate remains
+};
+
+// Verified per-sq-ft baseline rates (Lahore, With Material, Standard grade)
+const RATE_PER_SQFT = {
+  complete: 4621,
+  grey: 2553,
+};
+
+// Verified cost-split ratios, derived directly from the doc's two worked examples
+// (47.05 / 36.89 / 10.02 / 93.96 for Complete, 41.96 / 9.74 / 51.70 for Grey Structure)
+const SPLIT_RATIOS = {
+  complete: { greyMaterial: 0.5007, finishMaterial: 0.3926, labour: 0.1066 },
+  grey: { greyMaterial: 0.8116, labour: 0.1884 },
+};
+
+const toSquareFeet = (size, unit) => {
+  switch (unit) {
+    case "Marla":
+      return size * SQFT_PER_MARLA;
+    case "Kanal":
+      return size * MARLA_PER_KANAL * SQFT_PER_MARLA;
+    case "Square Yards":
+      return size * 9;
+    case "Square Meters":
+      return size * 10.764;
+    case "Acre":
+      return size * 43560;
+    case "Square Feet":
+    default:
+      return size;
+  }
+};
+
+const formatCurrency = (amount) => "Rs " + Math.round(amount).toLocaleString("en-PK");
+
+const calculateBtn = document.getElementById("calculateBtn");
+const calcResults = document.getElementById("calcResults");
+const resFinishRow = document.getElementById("resFinishRow");
+
+if (calculateBtn && calcResults) {
+  calculateBtn.addEventListener("click", () => {
+    const city = cityToggle.dataset.value || "Lahore";
+    const unit = unitToggle.dataset.value || "Marla";
+    const areaSizeInput = Number(document.getElementById("areaSize").value);
+    const coveredAreaInput = Number(document.getElementById("coveredArea").value);
+
+    // Use covered area if the person typed one directly, otherwise derive it from area size + unit
+    const coveredArea = coveredAreaInput > 0
+      ? coveredAreaInput
+      : toSquareFeet(areaSizeInput > 0 ? areaSizeInput : 5, unit);
+
+    const constructionType = calcBox.querySelector("#constructionTypeField .pill-btn.is-active").dataset.value; // "grey" or "complete"
+    const constructionMode = calcBox.querySelector("#constructionModeField .pill-btn.is-active").dataset.value; // "with" or "without"
+
+    const cityMultiplier = CITY_MULTIPLIER[city] || 1;
+    const modeMultiplier = MODE_MULTIPLIER[constructionMode] || 1;
+
+    const baseRatePerSqft = RATE_PER_SQFT[constructionType];
+    const splitRatios = SPLIT_RATIOS[constructionType];
+
+    // Formula 1: Total Cost = (rate per sq ft, adjusted for city and construction mode) x Covered Area
+    const totalCost = coveredArea * baseRatePerSqft * cityMultiplier * modeMultiplier;
+
+    const greyMaterialCost = totalCost * splitRatios.greyMaterial;
+    const labourCost = totalCost * splitRatios.labour;
+    const finishMaterialCost = constructionType === "complete" ? totalCost * splitRatios.finishMaterial : 0;
+
+    // Formula 2: Price per Sq. Ft. = Total Cost / Covered Area
+    const pricePerSqft = totalCost / coveredArea;
+
+    document.getElementById("resGreyMaterial").textContent = formatCurrency(greyMaterialCost);
+    document.getElementById("resLabour").textContent = formatCurrency(labourCost);
+    document.getElementById("resTotal").textContent = formatCurrency(totalCost);
+    document.getElementById("resPerSqft").textContent = formatCurrency(pricePerSqft);
+
+    if (constructionType === "complete") {
+      resFinishRow.style.display = "flex";
+      document.getElementById("resFinishMaterial").textContent = formatCurrency(finishMaterialCost);
+    } else {
+      resFinishRow.style.display = "none";
+    }
+
+    calcResults.classList.remove("is-hidden");
+    updateCalcBoxSpacer();
+    calcResults.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+}
+
 window.addEventListener("load", updateCalcBoxSpacer);
 window.addEventListener("resize", updateCalcBoxSpacer);
 updateCalcBoxSpacer();

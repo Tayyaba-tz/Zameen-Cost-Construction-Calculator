@@ -156,48 +156,61 @@ if (calcBox && moreOptionsBtn) {
 }
 
 // ===================== CALCULATOR: Calculate Cost =====================
-// Formulas below are reverse-engineered from real Zameen result pages (see project
-// notes / uploaded formula analysis). Verified baseline is Lahore, Standard grade,
-// 5 Marla / 2,025 sq ft, "With Material":
-//   Complete:       Total = Rs 4,640 / sq ft  (Grey Material 50.09% / Finishing 39.27% / Labour 10.66%)
-//   Grey Structure: Total = Rs 2,553 / sq ft  (Grey Material 81.16% / Labour 18.84%)
-// City and Construction Mode multipliers below are estimated, Zameen does not
-// publish city-specific or mode-specific rate tables, so only the Lahore /
-// With-Material baseline above is directly checked against real output.
+// Formulas below are reverse-engineered from real Zameen result pages, cross-checked
+// against TWO independently verified examples (Lahore, 5 Marla / 2,025 sq ft):
+//   Complete, With Material:    Total 93.96L = Grey 47.05L + Finishing 36.89L + Labour 10.02L
+//   Complete, Without Material: Total 93.57L = Grey 48.01L + Finishing 36.89L + Labour 8.67L
+// Both reproduce exactly with the per-sq-ft rates below. One correction made along the way:
+// an uploaded reference document listed Labour rates as "Without Material: 495/sqft,
+// With Material: 428/sqft" — cross-checking that against the two real examples above
+// shows the labels are swapped (With Material actually verifies to ~495/sqft, Without
+// to ~428/sqft), so the rates below use the empirically-correct assignment.
+//
+// Covered-area-per-Marla ratio is NOT constant, it shrinks as plot size grows (confirmed
+// against the real "Popular Calculations" cards already used elsewhere on this page):
+// 405 sq ft/Marla up to 5 Marla, tapering down to 315 sq ft/Marla at 1 Kanal (20 Marla).
 
-const SQFT_PER_MARLA = 225;
 const MARLA_PER_KANAL = 20;
 
-const CITY_MULTIPLIER = {
-  Lahore: 1.0,
-  Karachi: 1.08,
-  Islamabad: 1.12,
-};
+// Real (marla, sq ft) anchor points taken from Zameen's own Popular Calculations cards
+const COVERED_AREA_TABLE = [
+  { marla: 3, sqft: 1215 },
+  { marla: 4, sqft: 1620 },
+  { marla: 5, sqft: 2025 },
+  { marla: 6, sqft: 2295 },
+  { marla: 7, sqft: 2678 },
+  { marla: 8, sqft: 3060 },
+  { marla: 10, sqft: 3375 },
+  { marla: 20, sqft: 6300 },
+];
 
-const MODE_MULTIPLIER = {
-  with: 1.0, // verified baseline assumes the contractor supplies material
-  without: 0.55, // inference only: material cost mostly stripped out, labour-heavy rate remains
-};
-
-// Verified per-sq-ft baseline rates (Lahore, With Material, Standard grade)
-const RATE_PER_SQFT = {
-  complete: 4621,
-  grey: 2553,
-};
-
-// Verified cost-split ratios, derived directly from the doc's two worked examples
-// (47.05 / 36.89 / 10.02 / 93.96 for Complete, 41.96 / 9.74 / 51.70 for Grey Structure)
-const SPLIT_RATIOS = {
-  complete: { greyMaterial: 0.5007, finishMaterial: 0.3926, labour: 0.1066 },
-  grey: { greyMaterial: 0.8116, labour: 0.1884 },
+// Piecewise-linear interpolation across the real anchor points above; holds the first/last
+// known ratio steady for sizes outside the table instead of guessing beyond the data.
+const marlaToCoveredSqft = (marla) => {
+  const table = COVERED_AREA_TABLE;
+  if (marla <= table[0].marla) {
+    return marla * (table[0].sqft / table[0].marla);
+  }
+  if (marla >= table[table.length - 1].marla) {
+    return marla * (table[table.length - 1].sqft / table[table.length - 1].marla);
+  }
+  for (let i = 0; i < table.length - 1; i++) {
+    const a = table[i];
+    const b = table[i + 1];
+    if (marla >= a.marla && marla <= b.marla) {
+      const t = (marla - a.marla) / (b.marla - a.marla);
+      return a.sqft + t * (b.sqft - a.sqft);
+    }
+  }
+  return marla * 405; // fallback, should not be reached
 };
 
 const toSquareFeet = (size, unit) => {
   switch (unit) {
     case "Marla":
-      return size * SQFT_PER_MARLA;
+      return marlaToCoveredSqft(size);
     case "Kanal":
-      return size * MARLA_PER_KANAL * SQFT_PER_MARLA;
+      return marlaToCoveredSqft(size * MARLA_PER_KANAL);
     case "Square Yards":
       return size * 9;
     case "Square Meters":
@@ -210,7 +223,54 @@ const toSquareFeet = (size, unit) => {
   }
 };
 
-const formatCurrency = (amount) => "Rs " + Math.round(amount).toLocaleString("en-PK");
+const CITY_MULTIPLIER = {
+  Lahore: 1.0,
+  Karachi: 1.08,
+  Islamabad: 1.12,
+};
+
+// Verified per-sq-ft rates (Lahore, Standard grade), split by construction type and mode
+const RATES_PER_SQFT = {
+  complete: {
+    with: { greyMaterial: 2323.5, finishMaterial: 1821.7, labour: 494.8 },
+    without: { greyMaterial: 2370.9, finishMaterial: 1821.7, labour: 428.1 },
+  },
+  grey: {
+    // Only one verified data point exists for Grey Structure (With Material).
+    // The "without" rates are estimated by applying the same relative with/without
+    // shift observed for Complete construction, not independently verified.
+    with: { greyMaterial: 2072.1, labour: 481.0 },
+    without: { greyMaterial: 2114.4, labour: 416.1 },
+  },
+};
+
+// Formats a number using Pakistani digit grouping (last 3 digits, then pairs):
+// e.g. 4621 -> "4,621", 1234567 -> "12,34,567"
+const formatIndianGrouping = (num) => {
+  const rounded = Math.round(num);
+  const isNegative = rounded < 0;
+  const digits = Math.abs(rounded).toString();
+  const lastThree = digits.slice(-3);
+  const otherDigits = digits.slice(0, -3);
+  const groupedRest = otherDigits.replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+  const combined = otherDigits ? `${groupedRest},${lastThree}` : lastThree;
+  return (isNegative ? "-" : "") + combined;
+};
+
+// Amounts of Rs 1,00,000 (1 Lakh) and above switch to Lakh / Crore, matching
+// how Zameen itself displays results (e.g. "93.96 Lakh") rather than a long
+// string of digits. Smaller amounts (like Price per Sq. Ft.) stay as plain
+// rupees with Pakistani-style comma grouping.
+const formatCurrency = (amount) => {
+  const absAmount = Math.abs(amount);
+  if (absAmount >= 10000000) {
+    return "Rs " + (amount / 10000000).toFixed(2) + " Crore";
+  }
+  if (absAmount >= 100000) {
+    return "Rs " + (amount / 100000).toFixed(2) + " Lakh";
+  }
+  return "Rs " + formatIndianGrouping(amount);
+};
 
 const calculateBtn = document.getElementById("calculateBtn");
 const calcResults = document.getElementById("calcResults");
@@ -232,19 +292,18 @@ if (calculateBtn && calcResults) {
     const constructionMode = calcBox.querySelector("#constructionModeField .pill-btn.is-active").dataset.value; // "with" or "without"
 
     const cityMultiplier = CITY_MULTIPLIER[city] || 1;
-    const modeMultiplier = MODE_MULTIPLIER[constructionMode] || 1;
+    const rates = RATES_PER_SQFT[constructionType][constructionMode];
 
-    const baseRatePerSqft = RATE_PER_SQFT[constructionType];
-    const splitRatios = SPLIT_RATIOS[constructionType];
+    // Formula: each bucket = Covered Area x its own per-sq-ft rate x city multiplier
+    const greyMaterialCost = coveredArea * rates.greyMaterial * cityMultiplier;
+    const labourCost = coveredArea * rates.labour * cityMultiplier;
+    const finishMaterialCost = constructionType === "complete"
+      ? coveredArea * rates.finishMaterial * cityMultiplier
+      : 0;
 
-    // Formula 1: Total Cost = (rate per sq ft, adjusted for city and construction mode) x Covered Area
-    const totalCost = coveredArea * baseRatePerSqft * cityMultiplier * modeMultiplier;
+    const totalCost = greyMaterialCost + finishMaterialCost + labourCost;
 
-    const greyMaterialCost = totalCost * splitRatios.greyMaterial;
-    const labourCost = totalCost * splitRatios.labour;
-    const finishMaterialCost = constructionType === "complete" ? totalCost * splitRatios.finishMaterial : 0;
-
-    // Formula 2: Price per Sq. Ft. = Total Cost / Covered Area
+    // Price per Sq. Ft. = Total Cost / Covered Area
     const pricePerSqft = totalCost / coveredArea;
 
     document.getElementById("resGreyMaterial").textContent = formatCurrency(greyMaterialCost);
@@ -268,6 +327,7 @@ if (calculateBtn && calcResults) {
 window.addEventListener("load", updateCalcBoxSpacer);
 window.addEventListener("resize", updateCalcBoxSpacer);
 updateCalcBoxSpacer();
+
 
 // ===================== MOBILE HAMBURGER MENU =====================
 const hamburgerBtn = document.getElementById("hamburgerBtn");

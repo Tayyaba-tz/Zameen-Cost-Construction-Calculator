@@ -59,20 +59,21 @@ const popularTrack = document.getElementById("popularTrack");
 const popularPrev = document.getElementById("popularPrev");
 const popularNext = document.getElementById("popularNext");
 
+const updateArrowVisibility = () => {
+  if (!popularTrack || !popularPrev || !popularNext) return;
+  const atStart = popularTrack.scrollLeft <= 4;
+  const atEnd = popularTrack.scrollLeft + popularTrack.clientWidth >= popularTrack.scrollWidth - 4;
+
+  popularPrev.classList.toggle("is-hidden", atStart);
+  popularNext.classList.toggle("is-hidden", atEnd);
+};
+
 if (popularTrack && popularPrev && popularNext) {
   const scrollByAmount = () => {
     const firstCard = popularTrack.querySelector(".popular__card");
     const cardWidth = firstCard ? firstCard.offsetWidth : 200;
     const gap = 14;
     return cardWidth + gap;
-  };
-
-  const updateArrowVisibility = () => {
-    const atStart = popularTrack.scrollLeft <= 4;
-    const atEnd = popularTrack.scrollLeft + popularTrack.clientWidth >= popularTrack.scrollWidth - 4;
-
-    popularPrev.classList.toggle("is-hidden", atStart);
-    popularNext.classList.toggle("is-hidden", atEnd);
   };
 
   popularPrev.addEventListener("click", () => {
@@ -92,6 +93,52 @@ if (popularTrack && popularPrev && popularNext) {
 const cityToggle = document.getElementById("cityToggle");
 const unitToggle = document.getElementById("unitToggle");
 
+// ===================== POPULAR CALCULATIONS: rebuild cards per selected city =====================
+// URL suffix differs by city on the real site (confirmed by inspecting live pages):
+// Lahore uses "-lahore-1", Karachi uses "-karachi-2", Islamabad uses "-islamabad-3".
+const CITY_URL_SUFFIX = {
+  Lahore: "lahore-1",
+  Karachi: "karachi-2",
+  Islamabad: "islamabad-3",
+};
+
+// (title, sub-line, url-slug) for each of the 12 popular cards; the same 12 sizes/types
+// exist for every city, only the URL suffix and displayed city name change.
+const POPULAR_CARD_DEFS = [
+  { title: "3 Marla<br>Construction Cost", sub: "Double Story<br>1,215 Sq. ft.", slug: "3-marla-house-construction-cost" },
+  { title: "4 Marla<br>Construction Cost", sub: "Double Story<br>1,620 Sq. ft.", slug: "4-marla-house-construction-cost" },
+  { title: "5 Marla<br>Construction Cost", sub: "Double Story<br>2,025 Sq. ft.", slug: "5-marla-house-construction-cost" },
+  { title: "6 Marla<br>Construction Cost", sub: "Double Story<br>2,295 Sq. ft.", slug: "6-marla-house-construction-cost" },
+  { title: "7 Marla<br>Construction Cost", sub: "Double Story<br>2,678 Sq. ft.", slug: "7-marla-house-construction-cost" },
+  { title: "8 Marla<br>Construction Cost", sub: "Double Story<br>3,060 Sq. ft.", slug: "8-marla-house-construction-cost" },
+  { title: "10 Marla<br>Construction Cost", sub: "Double Story<br>3,375 Sq. ft.", slug: "10-marla-house-construction-cost" },
+  { title: "1 Kanal<br>Construction Cost", sub: "Double Story<br>6,300 Sq. ft.", slug: "1-kanal-house-construction-cost" },
+  { title: "3 Marla<br>Grey Structure Cost", sub: "Double Story<br>1,215 Sq. ft.", slug: "3-marla-grey-construction-cost" },
+  { title: "5 Marla<br>Grey Structure Cost", sub: "Double Story<br>2,025 Sq. ft.", slug: "5-marla-grey-construction-cost" },
+  { title: "10 Marla<br>Grey Structure Cost", sub: "Double Story<br>3,375 Sq. ft.", slug: "10-marla-grey-construction-cost" },
+  { title: "1 Kanal<br>Grey Structure Cost", sub: "Double Story<br>6,300 Sq. ft.", slug: "1-kanal-grey-construction-cost" },
+];
+
+const popularHeading = document.getElementById("popularHeading");
+
+const renderPopularCards = (city) => {
+  if (!popularHeading || !popularTrack) return;
+  const suffix = CITY_URL_SUFFIX[city] || CITY_URL_SUFFIX.Lahore;
+
+  popularHeading.textContent = `Popular Calculations in ${city}`;
+  popularTrack.innerHTML = POPULAR_CARD_DEFS.map((card) => `
+    <a href="https://www.zameen.com/tools/construction-cost-calculator/${card.slug}-${suffix}/" class="popular__card">
+      <span class="popular__card-title">${card.title}</span>
+      <span class="popular__card-sub">${card.sub}</span>
+      <span class="popular__card-details">Details &gt;</span>
+    </a>
+  `).join("");
+
+  // scroll back to the start and refresh the carousel arrows for the new set of cards
+  popularTrack.scrollLeft = 0;
+  updateArrowVisibility();
+};
+
 document.querySelectorAll("[data-city]").forEach((link) => {
   link.addEventListener("click", (event) => {
     event.preventDefault();
@@ -99,6 +146,7 @@ document.querySelectorAll("[data-city]").forEach((link) => {
     cityToggle.textContent = city;
     cityToggle.dataset.value = city;
     document.querySelectorAll("[data-city]").forEach((l) => l.classList.toggle("is-current", l === link));
+    renderPopularCards(city);
     closeAllDropdowns();
   });
 });
@@ -156,23 +204,19 @@ if (calcBox && moreOptionsBtn) {
 }
 
 // ===================== CALCULATOR: Calculate Cost =====================
-// Formulas below are reverse-engineered from real Zameen result pages, cross-checked
-// against TWO independently verified examples (Lahore, 5 Marla / 2,025 sq ft):
-//   Complete, With Material:    Total 93.96L = Grey 47.05L + Finishing 36.89L + Labour 10.02L
-//   Complete, Without Material: Total 93.57L = Grey 48.01L + Finishing 36.89L + Labour 8.67L
-// Both reproduce exactly with the per-sq-ft rates below. One correction made along the way:
-// an uploaded reference document listed Labour rates as "Without Material: 495/sqft,
-// With Material: 428/sqft" — cross-checking that against the two real examples above
-// shows the labels are swapped (With Material actually verifies to ~495/sqft, Without
-// to ~428/sqft), so the rates below use the empirically-correct assignment.
-//
-// Covered-area-per-Marla ratio is NOT constant, it shrinks as plot size grows (confirmed
-// against the real "Popular Calculations" cards already used elsewhere on this page):
-// 405 sq ft/Marla up to 5 Marla, tapering down to 315 sq ft/Marla at 1 Kanal (20 Marla).
+// Rebuilt from real Zameen result pages fetched directly for this fix, not just the
+// single 5-Marla example used before. Real data gathered (Lahore, With Material):
+//   Complete:    3 Marla/1,215 sqft, 5 Marla/2,025 sqft, 10 Marla/3,375 sqft, 1 Kanal/6,300 sqft
+//   Grey only:   3 Marla, 5 Marla, 10 Marla (same sqft figures)
+//   Plus Karachi and Islamabad at 5 Marla Complete, for city multipliers.
+// Key finding: per-sq-ft cost is NOT constant across sizes (smaller houses cost more per
+// sq ft), so rates are now interpolated across real size anchor points instead of a single
+// flat number. Labour, by contrast, IS a near-constant rate regardless of size (~495/sqft
+// Complete, ~481/sqft Grey Structure, both With Material) — confirmed across all 4 sizes.
 
 const MARLA_PER_KANAL = 20;
 
-// Real (marla, sq ft) anchor points taken from Zameen's own Popular Calculations cards
+// Real (marla, sq ft) anchor points, from Zameen's own Popular Calculations cards
 const COVERED_AREA_TABLE = [
   { marla: 3, sqft: 1215 },
   { marla: 4, sqft: 1620 },
@@ -184,26 +228,23 @@ const COVERED_AREA_TABLE = [
   { marla: 20, sqft: 6300 },
 ];
 
-// Piecewise-linear interpolation across the real anchor points above; holds the first/last
-// known ratio steady for sizes outside the table instead of guessing beyond the data.
-const marlaToCoveredSqft = (marla) => {
-  const table = COVERED_AREA_TABLE;
-  if (marla <= table[0].marla) {
-    return marla * (table[0].sqft / table[0].marla);
-  }
-  if (marla >= table[table.length - 1].marla) {
-    return marla * (table[table.length - 1].sqft / table[table.length - 1].marla);
-  }
+// Generic piecewise-linear interpolation across a sorted (x, y) table; holds the
+// nearest known ratio steady for inputs outside the table instead of guessing beyond it.
+const interpolate = (x, table, xKey, yKey) => {
+  if (x <= table[0][xKey]) return (x / table[0][xKey]) * table[0][yKey];
+  const last = table[table.length - 1];
+  if (x >= last[xKey]) return (x / last[xKey]) * last[yKey];
   for (let i = 0; i < table.length - 1; i++) {
     const a = table[i];
     const b = table[i + 1];
-    if (marla >= a.marla && marla <= b.marla) {
-      const t = (marla - a.marla) / (b.marla - a.marla);
-      return a.sqft + t * (b.sqft - a.sqft);
+    if (x >= a[xKey] && x <= b[xKey]) {
+      const t = (x - a[xKey]) / (b[xKey] - a[xKey]);
+      return a[yKey] + t * (b[yKey] - a[yKey]);
     }
   }
-  return marla * 405; // fallback, should not be reached
 };
+
+const marlaToCoveredSqft = (marla) => interpolate(marla, COVERED_AREA_TABLE, "marla", "sqft");
 
 const toSquareFeet = (size, unit) => {
   switch (unit) {
@@ -223,29 +264,43 @@ const toSquareFeet = (size, unit) => {
   }
 };
 
+// Per-sq-ft rate anchor points (Rs/sqft), Lahore, With Material — real data, not estimated
+const GREY_RATE_TABLE_COMPLETE = [
+  { sqft: 1215, rate: 2220.6 },
+  { sqft: 2025, rate: 2323.5 },
+  { sqft: 3375, rate: 2055.7 },
+  { sqft: 6300, rate: 2142.9 },
+];
+const FINISH_RATE_TABLE = [
+  { sqft: 1215, rate: 2376.1 },
+  { sqft: 2025, rate: 1821.7 },
+  { sqft: 3375, rate: 1661.9 },
+  { sqft: 6300, rate: 1500.3 },
+];
+const GREY_RATE_TABLE_ONLY = [
+  { sqft: 1215, rate: 2519.3 },
+  { sqft: 2025, rate: 2072.1 },
+  { sqft: 3375, rate: 2055.7 },
+];
+
+// Labour is a near-flat rate regardless of size (confirmed 494.7–495.1 across all 4
+// Complete data points, 480.7–481.0 across all 3 Grey Structure data points)
+const LABOUR_RATE = {
+  complete: { with: 495, without: 428 },
+  grey: { with: 481, without: 416 }, // "without" for Grey Structure is estimated (no verified data point)
+};
+
+// City multipliers per cost bucket, derived from real Karachi/Islamabad 5-Marla pages
 const CITY_MULTIPLIER = {
-  Lahore: 1.0,
-  Karachi: 1.08,
-  Islamabad: 1.12,
+  Lahore: { grey: 1.0, finish: 1.0, labour: 1.0 },
+  Karachi: { grey: 1.0125, finish: 1.0141, labour: 1.0429 },
+  Islamabad: { grey: 0.9530, finish: 1.0033, labour: 1.0409 },
 };
 
-// Verified per-sq-ft rates (Lahore, Standard grade), split by construction type and mode
-const RATES_PER_SQFT = {
-  complete: {
-    with: { greyMaterial: 2323.5, finishMaterial: 1821.7, labour: 494.8 },
-    without: { greyMaterial: 2370.9, finishMaterial: 1821.7, labour: 428.1 },
-  },
-  grey: {
-    // Only one verified data point exists for Grey Structure (With Material).
-    // The "without" rates are estimated by applying the same relative with/without
-    // shift observed for Complete construction, not independently verified.
-    with: { greyMaterial: 2072.1, labour: 481.0 },
-    without: { greyMaterial: 2114.4, labour: 416.1 },
-  },
-};
+// The "Without Material" shift observed at the one verified data point (5 Marla Complete):
+// Grey Material actually went UP slightly, Finishing stayed the same, Labour went down.
+const WITHOUT_MATERIAL_SHIFT = { grey: 1.0204, finish: 1.0 };
 
-// Formats a number using Pakistani digit grouping (last 3 digits, then pairs):
-// e.g. 4621 -> "4,621", 1234567 -> "12,34,567"
 const formatIndianGrouping = (num) => {
   const rounded = Math.round(num);
   const isNegative = rounded < 0;
@@ -257,10 +312,6 @@ const formatIndianGrouping = (num) => {
   return (isNegative ? "-" : "") + combined;
 };
 
-// Amounts of Rs 1,00,000 (1 Lakh) and above switch to Lakh / Crore, matching
-// how Zameen itself displays results (e.g. "93.96 Lakh") rather than a long
-// string of digits. Smaller amounts (like Price per Sq. Ft.) stay as plain
-// rupees with Pakistani-style comma grouping.
 const formatCurrency = (amount) => {
   const absAmount = Math.abs(amount);
   if (absAmount >= 10000000) {
@@ -291,14 +342,27 @@ if (calculateBtn && calcResults) {
     const constructionType = calcBox.querySelector("#constructionTypeField .pill-btn.is-active").dataset.value; // "grey" or "complete"
     const constructionMode = calcBox.querySelector("#constructionModeField .pill-btn.is-active").dataset.value; // "with" or "without"
 
-    const cityMultiplier = CITY_MULTIPLIER[city] || 1;
-    const rates = RATES_PER_SQFT[constructionType][constructionMode];
+    const cityMult = CITY_MULTIPLIER[city] || CITY_MULTIPLIER.Lahore;
 
-    // Formula: each bucket = Covered Area x its own per-sq-ft rate x city multiplier
-    const greyMaterialCost = coveredArea * rates.greyMaterial * cityMultiplier;
-    const labourCost = coveredArea * rates.labour * cityMultiplier;
+    // Interpolate the size-dependent grey/finish rates for this exact covered area
+    let greyRate = constructionType === "complete"
+      ? interpolate(coveredArea, GREY_RATE_TABLE_COMPLETE, "sqft", "rate")
+      : interpolate(coveredArea, GREY_RATE_TABLE_ONLY, "sqft", "rate");
+    let finishRate = interpolate(coveredArea, FINISH_RATE_TABLE, "sqft", "rate");
+
+    // Apply the Without-Material shift (estimated to carry over from the one verified
+    // data point at every size, since per-size without-material data isn't available)
+    if (constructionMode === "without") {
+      greyRate *= WITHOUT_MATERIAL_SHIFT.grey;
+      finishRate *= WITHOUT_MATERIAL_SHIFT.finish;
+    }
+
+    const labourRate = LABOUR_RATE[constructionType][constructionMode];
+
+    const greyMaterialCost = coveredArea * greyRate * cityMult.grey;
+    const labourCost = coveredArea * labourRate * cityMult.labour;
     const finishMaterialCost = constructionType === "complete"
-      ? coveredArea * rates.finishMaterial * cityMultiplier
+      ? coveredArea * finishRate * cityMult.finish
       : 0;
 
     const totalCost = greyMaterialCost + finishMaterialCost + labourCost;

@@ -94,8 +94,6 @@ const cityToggle = document.getElementById("cityToggle");
 const unitToggle = document.getElementById("unitToggle");
 
 // ===================== POPULAR CALCULATIONS: rebuild cards per selected city =====================
-// URL suffix differs by city on the real site (confirmed by inspecting live pages):
-// Lahore uses "-lahore-1", Karachi uses "-karachi-2", Islamabad uses "-islamabad-3".
 const CITY_URL_SUFFIX = {
   Lahore: "lahore-1",
   Karachi: "karachi-2",
@@ -204,16 +202,6 @@ if (calcBox && moreOptionsBtn) {
 }
 
 // ===================== CALCULATOR: Calculate Cost =====================
-// Rebuilt from real Zameen result pages fetched directly for this fix, not just the
-// single 5-Marla example used before. Real data gathered (Lahore, With Material):
-//   Complete:    3 Marla/1,215 sqft, 5 Marla/2,025 sqft, 10 Marla/3,375 sqft, 1 Kanal/6,300 sqft
-//   Grey only:   3 Marla, 5 Marla, 10 Marla (same sqft figures)
-//   Plus Karachi and Islamabad at 5 Marla Complete, for city multipliers.
-// Key finding: per-sq-ft cost is NOT constant across sizes (smaller houses cost more per
-// sq ft), so rates are now interpolated across real size anchor points instead of a single
-// flat number. Labour, by contrast, IS a near-constant rate regardless of size (~495/sqft
-// Complete, ~481/sqft Grey Structure, both With Material) — confirmed across all 4 sizes.
-
 const MARLA_PER_KANAL = 20;
 
 // Real (marla, sq ft) anchor points, from Zameen's own Popular Calculations cards
@@ -290,15 +278,12 @@ const LABOUR_RATE = {
   grey: { with: 481, without: 416 }, // "without" for Grey Structure is estimated (no verified data point)
 };
 
-// City multipliers per cost bucket, derived from real Karachi/Islamabad 5-Marla pages
 const CITY_MULTIPLIER = {
   Lahore: { grey: 1.0, finish: 1.0, labour: 1.0 },
   Karachi: { grey: 1.0125, finish: 1.0141, labour: 1.0429 },
   Islamabad: { grey: 0.9530, finish: 1.0033, labour: 1.0409 },
 };
 
-// The "Without Material" shift observed at the one verified data point (5 Marla Complete):
-// Grey Material actually went UP slightly, Finishing stayed the same, Labour went down.
 const WITHOUT_MATERIAL_SHIFT = { grey: 1.0204, finish: 1.0 };
 
 const formatIndianGrouping = (num) => {
@@ -404,7 +389,6 @@ hamburgerBtn.addEventListener("click", () => {
 });
 
 // Close the mobile menu automatically if the window is resized back to desktop width
-// (must match the max-width used in style.css for the hamburger breakpoint)
 const MOBILE_BREAKPOINT = 768;
 
 window.addEventListener("resize", () => {

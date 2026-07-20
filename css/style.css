@@ -495,7 +495,7 @@ img {
   background-position: center;
   background-repeat: no-repeat;
   padding-top: 40px;
-  padding-bottom: 210px; /* fixed height reserved for the illustration; never changes size */
+  padding-bottom: 210px; 
 }
 
 .banner__inner {
@@ -555,7 +555,7 @@ img {
 /* ===================== CALCULATOR BOX ===================== */
 .calc-box-wrap {
   position: absolute;
-  top: calc(100% - 90px); /* fixed 90px overlap into the banner's bottom edge, regardless of the box's own height */
+  top: calc(100% - 90px); 
   left: 50%;
   transform: translateX(-50%);
   width: min(1150px, calc(100% - 48px));
@@ -1113,9 +1113,6 @@ img {
 }
 
 /* ===================== GET THE ZAMEEN APP ===================== */
-/* Mirrors the real site's technique: background-size "cover" is the base
-   (mobile) rule, then min-width:641px switches to "contain" anchored to
-   bottom-center, so the illustration never overwhelms the text above it. */
 .app-promo {
   position: relative;
   background-image: url("../images/app-bg-mob.png");

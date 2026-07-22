@@ -204,47 +204,12 @@ if (calcBox && moreOptionsBtn) {
 }
 
 // ===================== CALCULATOR: Calculate Cost =====================
-// Rebuilt from real Zameen result pages fetched directly for this fix, not just the
-// single 5-Marla example used before. Real data gathered (Lahore, With Material):
-//   Complete:    3 Marla/1,215 sqft, 5 Marla/2,025 sqft, 10 Marla/3,375 sqft, 1 Kanal/6,300 sqft
-//   Grey only:   3 Marla, 5 Marla, 10 Marla (same sqft figures)
-//   Plus Karachi and Islamabad at 5 Marla Complete, for city multipliers.
-// Key finding: per-sq-ft cost is NOT constant across sizes (smaller houses cost more per
-// sq ft), so rates are now interpolated across real size anchor points instead of a single
-// flat number. Labour, by contrast, IS a near-constant rate regardless of size (~495/sqft
-// Complete, ~481/sqft Grey Structure, both With Material) — confirmed across all 4 sizes.
-
 const MARLA_PER_KANAL = 20;
 
-// Real (marla, sq ft) anchor points, from Zameen's own Popular Calculations cards
-const COVERED_AREA_TABLE = [
-  { marla: 3, sqft: 1215 },
-  { marla: 4, sqft: 1620 },
-  { marla: 5, sqft: 2025 },
-  { marla: 6, sqft: 2295 },
-  { marla: 7, sqft: 2678 },
-  { marla: 8, sqft: 3060 },
-  { marla: 10, sqft: 3375 },
-  { marla: 20, sqft: 6300 },
-];
+// Fixed ratio: 1 Marla always equals 405 sq ft of covered area
+const SQFT_PER_MARLA = 405;
 
-// Generic piecewise-linear interpolation across a sorted (x, y) table; holds the
-// nearest known ratio steady for inputs outside the table instead of guessing beyond it.
-const interpolate = (x, table, xKey, yKey) => {
-  if (x <= table[0][xKey]) return (x / table[0][xKey]) * table[0][yKey];
-  const last = table[table.length - 1];
-  if (x >= last[xKey]) return (x / last[xKey]) * last[yKey];
-  for (let i = 0; i < table.length - 1; i++) {
-    const a = table[i];
-    const b = table[i + 1];
-    if (x >= a[xKey] && x <= b[xKey]) {
-      const t = (x - a[xKey]) / (b[xKey] - a[xKey]);
-      return a[yKey] + t * (b[yKey] - a[yKey]);
-    }
-  }
-};
-
-const marlaToCoveredSqft = (marla) => interpolate(marla, COVERED_AREA_TABLE, "marla", "sqft");
+const marlaToCoveredSqft = (marla) => marla * SQFT_PER_MARLA;
 
 const toSquareFeet = (size, unit) => {
   switch (unit) {
@@ -264,58 +229,41 @@ const toSquareFeet = (size, unit) => {
   }
 };
 
-// Real Price-per-Sq-Ft rates, provided directly (Rs/sqft, by city and Marla size).
-// Two combinations were directly measured: Complete construction pairs with Without
-// Material, Grey Structure pairs with With Material. The other two combinations
-// (Complete+With, Grey+Without) are estimated using the ratio derived from the one
-// available With-vs-Without comparison point (Rs 10.02L vs Rs 8.67L labour on the same
-// 5 Marla house): With Material runs about 15.57% higher than Without Material.
-const PRICE_PER_SQFT_COMPLETE_WITHOUT_MATERIAL = {
-  Lahore: { 3: 5324, 4: 4962, 5: 4621, 6: 4596, 7: 4411, 8: 4488, 10: 4456, 20: 4404 },
-  Karachi: { 3: 5370, 4: 4998, 5: 4649, 6: 4623, 7: 4433, 8: 4510, 10: 4475, 20: 4412 },
-  Islamabad: { 3: 5196, 4: 4833, 5: 4490, 6: 4466, 7: 4280, 8: 4353, 10: 4320, 20: 4256 },
-};
-const PRICE_PER_SQFT_GREY_WITH_MATERIAL = {
-  Lahore: { 3: 3001, 4: 2983, 5: 2852, 6: 2896, 7: 2814, 8: 2895, 10: 2848, 20: 2956 },
-  Karachi: { 3: 3004, 4: 2987, 5: 2855, 6: 2900, 7: 2817, 8: 2896, 10: 2849, 20: 2954 },
-  Islamabad: { 3: 2864, 4: 2848, 5: 2715, 6: 2760, 7: 2677, 8: 2754, 10: 2706, 20: 2804 },
-};
-const WITH_VS_WITHOUT_RATIO = 1.1557; // With Material averages ~15.57% higher
+// ===================== STATIC PERCENTAGE-BASED RATE MODEL =====================
 
-// Build a {sqft, rate} interpolation table for a given city + type + mode, using the
-// same Marla anchor points as COVERED_AREA_TABLE so both tables line up exactly.
-const buildRateTable = (city, constructionType, constructionMode) => {
-  const baseTable = constructionType === "complete"
-    ? PRICE_PER_SQFT_COMPLETE_WITHOUT_MATERIAL[city]
-    : PRICE_PER_SQFT_GREY_WITH_MATERIAL[city];
-  const isEstimated = (constructionType === "complete" && constructionMode === "with")
+const BASE_RATE = {
+  complete: 4621, // Rs/sqft, Lahore, Complete + Without Material 
+  grey: 2852, // Rs/sqft, Lahore, Grey Structure + With Material 
+};
+
+// % difference vs Lahore, fixed per city, increase or decrease 
+const CITY_PERCENT = {
+  complete: { Lahore: 0, Karachi: 0.005475, Islamabad: -0.028822 }, 
+  grey: { Lahore: 0, Karachi: 0.000732, Islamabad: -0.048072 }, 
+};
+
+const WITH_VS_WITHOUT_RATIO = 1.1557; // With Material averages ~15.57% higher 
+
+// Computes the blended Rs/sqft rate for a given city, type, and mode.
+const getBlendedRate = (city, constructionType, constructionMode) => {
+  const cityPct = CITY_PERCENT[constructionType][city] ?? 0;
+  let rate = BASE_RATE[constructionType] * (1 + cityPct);
+
+  const isEstimatedMode = (constructionType === "complete" && constructionMode === "with")
     || (constructionType === "grey" && constructionMode === "without");
-  const shift = constructionType === "complete" ? WITH_VS_WITHOUT_RATIO : (1 / WITH_VS_WITHOUT_RATIO);
+  if (isEstimatedMode) {
+    rate *= constructionType === "complete" ? WITH_VS_WITHOUT_RATIO : (1 / WITH_VS_WITHOUT_RATIO);
+  }
 
-  return COVERED_AREA_TABLE
-    .filter((point) => point.marla in baseTable)
-    .map((point) => ({
-      sqft: point.sqft,
-      rate: isEstimated ? baseTable[point.marla] * shift : baseTable[point.marla],
-    }));
+  return rate;
 };
 
-// Cost-bucket proportions used only to split the blended rate above into the 4 display
-// lines (Grey Material / Finishing Material / Labour). Derived from the one real
-// Without-Material breakdown available (5 Marla Lahore: Grey 48.01L / Finish 36.89L /
-// Labour 8.67L of 93.57L total) for Complete, and the one real Grey Structure breakdown
-// (5 Marla Lahore: Grey 41.96L / Labour 9.74L of 51.70L total) for Grey Structure only.
-// Applied as a constant proportion at every size/city/mode — an approximation, since the
-// new rate data given is a single blended number with no material/labour split of its own.
 const SPLIT_RATIOS = {
   complete: { greyMaterial: 0.5131, finishMaterial: 0.3943, labour: 0.0927 },
   grey: { greyMaterial: 0.8116, labour: 0.1884 },
 };
 
 // ===================== AREA SIZE RANGE VALIDATION =====================
-// Real site shows "Valid range is 3 Marla - 1999 Marla" for the Marla unit; the same
-// underlying 3-1999 Marla range is converted into the equivalent bounds for every
-// other unit so the validation stays consistent no matter which unit is selected.
 const MARLA_RANGE = { min: 3, max: 1999 };
 
 const getAreaRangeForUnit = (unit) => {
@@ -403,8 +351,6 @@ if (calculateBtn && calcResults) {
     const coveredAreaInput = Number(document.getElementById("coveredArea").value);
 
     // Block calculation if Area Size is outside the valid range for its unit
-    // (only applies when the person actually typed an Area Size; a direct
-    // Covered Area entry bypasses Area Size entirely).
     if (coveredAreaInput <= 0 && !validateAreaSize()) {
       return;
     }
@@ -417,8 +363,7 @@ if (calculateBtn && calcResults) {
     const constructionType = calcBox.querySelector("#constructionTypeField .pill-btn.is-active").dataset.value; // "grey" or "complete"
     const constructionMode = calcBox.querySelector("#constructionModeField .pill-btn.is-active").dataset.value; // "with" or "without"
 
-    const rateTable = buildRateTable(city, constructionType, constructionMode);
-    const blendedRate = interpolate(coveredArea, rateTable, "sqft", "rate");
+    const blendedRate = getBlendedRate(city, constructionType, constructionMode);
     const splitRatios = SPLIT_RATIOS[constructionType];
 
     const totalCost = coveredArea * blendedRate;
@@ -465,7 +410,6 @@ hamburgerBtn.addEventListener("click", () => {
 });
 
 // Close the mobile menu automatically if the window is resized back to desktop width
-// (must match the max-width used in style.css for the hamburger breakpoint)
 const MOBILE_BREAKPOINT = 768;
 
 window.addEventListener("resize", () => {

@@ -206,7 +206,6 @@ img {
   position: relative;
   font-size: .875rem;
   color: #848484;
-  margin-left: 30px;
 }
 
 .mainnav__logo {
@@ -220,6 +219,7 @@ img {
 .mainnav__logo img {
   height: 30px;
   width: 150px;
+  margin-left: 30px;
 }
 
 .mainnav__logo--mobile {
